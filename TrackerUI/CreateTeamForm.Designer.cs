@@ -246,6 +246,7 @@ namespace TrackerUI
             this.teamMembersListBox.Name = "teamMembersListBox";
             this.teamMembersListBox.Size = new System.Drawing.Size(423, 478);
             this.teamMembersListBox.TabIndex = 22;
+            this.teamMembersListBox.SelectedIndexChanged += new System.EventHandler(this.teamMembersListBox_SelectedIndexChanged);
             // 
             // createTeamButton
             // 
