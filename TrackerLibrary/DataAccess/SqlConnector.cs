@@ -112,5 +112,53 @@ namespace TrackerLibrary.DataAccess
 
             return output;
         }
+
+        public void CreateTournament(TournamentModel model)
+        {
+            using (IDbConnection connection = new MySql.Data.MySqlClient.MySqlConnection(GlobalConfig.ConnString(db)))
+            {
+                SaveTournament(connection, model);
+
+                SaveTournamentPrizes(connection, model);
+
+                SaveTournamentEntries(connection, model);
+            }
+        }
+        
+        private void SaveTournament(IDbConnection connection, TournamentModel model)
+        {
+            var p = new DynamicParameters();
+            p.Add("inp_TournamentName", model.TournamentName);
+            p.Add("inp_EntryFee", model.EntryFee);
+            p.Add("out_id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+            connection.Execute("sp_Tournaments_Insert", p, commandType: CommandType.StoredProcedure);
+
+            model.Id = p.Get<int>("out_id");
+        }
+        private void SaveTournamentPrizes(IDbConnection connection, TournamentModel model)
+        {
+            foreach (PrizeModel pm in model.Prizes)
+            {
+                var p = new DynamicParameters();
+                p.Add("inp_TournamentId", model.Id);
+                p.Add("inp_PrizeId", pm.Id);
+                p.Add("out_id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                connection.Execute("sp_TournamentPrizes_Insert", p, commandType: CommandType.StoredProcedure);
+            }
+        }
+        private void SaveTournamentEntries(IDbConnection connection, TournamentModel model)
+        {
+            foreach (TeamModel tm in model.EnteredTeams)
+            {
+                var p = new DynamicParameters();
+                p.Add("inp_TournamentId", model.Id);
+                p.Add("inp_TeamId", tm.Id);
+                p.Add("out_id", 0, dbType: DbType.Int32, direction: ParameterDirection.Output);
+
+                connection.Execute("sp_TournamentEntries_Insert", p, commandType: CommandType.StoredProcedure);
+            }
+        }
     }
 }
