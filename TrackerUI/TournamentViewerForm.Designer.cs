@@ -87,6 +87,7 @@ namespace TrackerUI
             this.roundDropdown.Name = "roundDropdown";
             this.roundDropdown.Size = new System.Drawing.Size(294, 45);
             this.roundDropdown.TabIndex = 3;
+            this.roundDropdown.SelectedIndexChanged += new System.EventHandler(this.roundDropdown_SelectedIndexChanged);
             // 
             // unplayedOnlyCheckbox
             // 
@@ -111,6 +112,7 @@ namespace TrackerUI
             this.matchupListBox.Name = "matchupListBox";
             this.matchupListBox.Size = new System.Drawing.Size(447, 335);
             this.matchupListBox.TabIndex = 5;
+            this.matchupListBox.SelectedIndexChanged += new System.EventHandler(this.matchupListBox_SelectedIndexChanged);
             // 
             // teamOneName
             // 
