@@ -16,7 +16,9 @@ namespace TrackerLibrary.Models
         /// </summary>
         public int Id { get; set; }
         /// <summary>
-        /// The Id from the database that will be used to identify the team competing. 
+        /// The Id from the database that will be used to identify the team competing.
+        /// Because it is from database THIS IS NOT A REPLACEMENT FOR .TeamCompeting.Id, which exists even for
+        /// newly created MatchupEntryModels that have not yet interacted with the database.
         /// </summary>
         public int TeamCompetingId { get; set; }
         /// <summary>

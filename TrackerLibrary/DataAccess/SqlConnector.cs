@@ -302,5 +302,37 @@ namespace TrackerLibrary.DataAccess
 
             return output;
         }
+
+        public void UpdateMatchup(MatchupModel model)
+        {
+            using (IDbConnection connection = new MySql.Data.MySqlClient.MySqlConnection(GlobalConfig.ConnString(db)))
+            {
+                var p = new DynamicParameters();
+                if (model.Winner != null)
+                {
+                    p.Add("inp_Id", model.Id);
+                    p.Add("inp_WinnerId", model.Winner.Id);
+
+                    connection.Execute("sp_Matchups_Update", p, commandType: CommandType.StoredProcedure);
+                }
+
+
+
+
+                foreach(MatchupEntryModel me in model.Entries)
+                {
+                    if (me.TeamCompeting != null)
+                    {
+                        p = new DynamicParameters();
+                        p.Add("inp_Id", me.Id);
+                        p.Add("inp_TeamCompetingId", me.TeamCompeting.Id);
+                        p.Add("inp_Score", me.Score);
+
+                        connection.Execute("sp_MatchupEntries_Update", p, commandType: CommandType.StoredProcedure);
+                    }
+
+                }
+            }
+        }
     }
 }
